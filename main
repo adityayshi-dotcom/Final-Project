@@ -1,0 +1,38 @@
+import 'package:flutter/material.dart';
+import 'package:my_app/login_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url:'https://yplksjvbxfkadbowxdgl.supabase.co',
+    anonKey:'sb_publishable_XtdErQSbmxBl8zkcOLpl2A_ipaDo3Dl',
+
+  );
+  
+
+  runApp(const CoffeeShopApp());
+}
+
+class CoffeeShopApp extends StatelessWidget {
+  const CoffeeShopApp({super.key});
+
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Coffee Shop App',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.brown,
+        scaffoldBackgroundColor: Colors.brown.shade50,
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+      home: const LoginScreen(),
+    );
+  }
+}
