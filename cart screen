@@ -1,0 +1,69 @@
+import 'package:flutter/material.dart';
+
+class CartScreen extends StatelessWidget {
+  final List<Map<String, dynamic>> cartItems;
+
+  const CartScreen({super.key, required this.cartItems});
+
+  double getTotal() {
+    double total = 0;
+    for (var item in cartItems) {
+      total += item["price"];
+    }
+    return total;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Your Cart"),
+        backgroundColor: Colors.brown,
+      ),
+      body: cartItems.isEmpty
+          ? const Center(
+              child: Text("Your cart is empty 😔", style: TextStyle(fontSize: 18)),
+            )
+          : Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: cartItems.length,
+                    itemBuilder: (context, index) {
+                      final item = cartItems[index];
+                      return Card(
+                        margin: const EdgeInsets.all(10),
+                        child: ListTile(
+                          leading: Image.network(item["image"], width: 60, height: 60, fit: BoxFit.cover),
+                          title: Text(item["name"]),
+                          subtitle: Text("\$${item["price"]}"),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Total: \$${getTotal().toStringAsFixed(2)}",
+                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(backgroundColor: Colors.brown),
+                        onPressed: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Order Placed!")),
+                          );
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Checkout"),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+    );
+  }
+}
